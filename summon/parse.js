@@ -17,7 +17,7 @@ var parse_advertisement = function (advertisement, cb) {
                     // Parse it as a c string
                     var null_char_index = advertisement.manufacturerData.indexOf(0);
                     if (null_char_index > -1) {
-                        var ip = advertisement.manufacturerData.slice(3, null_char_index+1);
+                        var ip = advertisement.manufacturerData.slice(3, null_char_index).toString();
 
                         console.log(ip);
 
