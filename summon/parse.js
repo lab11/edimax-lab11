@@ -124,7 +124,7 @@ var parse_advertisement = function (advertisement, cb) {
                             if (null_char_index > -1) {
                                 edimax_ip = b.slice(3, null_char_index).toString();
 
-                                console.log(edimax_ip);
+                                console.log('ipipipipip ' + edimax_ip);
                             }
                         }
 
@@ -187,6 +187,8 @@ var parse_advertisement = function (advertisement, cb) {
                             energy_week_kwh: energies[1],
                             energy_month_kwh: energies[2]
                         };
+
+                        console.log('PROMOTING')
 
                         cb(out);
                         return;
