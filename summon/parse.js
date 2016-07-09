@@ -10,9 +10,11 @@ var parse_advertisement = function (advertisement, cb) {
             // one for the service ID.
 
             if (Array.isArray(advertisement.manufacturerData)) {
+                console.log('is array')
 
                 for (var i=0; i<advertisement.manufacturerData.length; i++) {
                     var b = advertisement.manufacturerData.length[i];
+                    console.log(b)
 
                     if (b.length >= 3) {
                         // Check that manufacturer ID and service byte are correct
@@ -64,6 +66,8 @@ var parse_advertisement = function (advertisement, cb) {
                         }
                     }
                 }
+            } else {
+                console.log('not array')
             }
         }
     }
