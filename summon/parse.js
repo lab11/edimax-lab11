@@ -13,7 +13,7 @@ var parse_advertisement = function (advertisement, cb) {
                 console.log('is array')
 
                 for (var i=0; i<advertisement.manufacturerData.length; i++) {
-                    var b = advertisement.manufacturerData.length[i];
+                    var b = advertisement.manufacturerData[i];
                     console.log(b)
 
                     if (b.length >= 3) {
