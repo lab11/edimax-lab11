@@ -34,5 +34,9 @@ CFLAGS += -DEDIMAX_PW=\"$(EDIMAX_PW)\"
 hack := $(shell touch main.c)
 
 
+ENABLE_WIRELESS_DFU = 1
+RAM_KB=32
+FLASH_KB=256
+
 NRF_BASE_PATH ?= ../../nrf5x-base
 include $(NRF_BASE_PATH)/make/Makefile

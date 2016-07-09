@@ -33,7 +33,7 @@ typedef struct {
 
 typedef struct {
     uint8_t serviceid;
-    char pw[9];
+    char pw[10];
 } pw_mandata_t;
 
 static ip_mandata_t _ip_mandata = {
