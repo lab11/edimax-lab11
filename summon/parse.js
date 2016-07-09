@@ -67,7 +67,7 @@ function getSwitchPower (options) {
             var end = '</Device.System.Power.NowPower>';
             var power = parseFloat(get_value(d, start, end));
             console.log(power);
-            return a;
+            return power;
         } else {
             return undefined;
         }
