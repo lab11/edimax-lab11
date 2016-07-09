@@ -191,6 +191,19 @@ var parse_advertisement = function (advertisement, cb) {
                     var power = getSwitchPower({host: edimax_ip, password: edimax_pw});
                     var energies = getSwitchEnergy({host: edimax_ip, password: edimax_pw});
 
+                    if (power !== undefined && energies !== undefined) {
+                        var out = {
+                            device: 'edimax-sp2101w',
+                            power_watts: power,
+                            energy_day_kwh: energies[0],
+                            energy_week_kwh: energies[1],
+                            energy_month_kwh: energies[2]
+                        };
+
+                        cb(out);
+                        return;
+                    }
+
                     console.log(power)
                     console.log(energies)
                 }
