@@ -18,8 +18,6 @@ function postRequest (command, options, cb) {
     options.headers['Authorization'] =
         "Basic " + new Buffer(options.username + ":" + options.password).toString("base64");
 
-    console.log(options)
-
     var data = '';
     var postReq = http.request(options, function (response) {
         var error;
@@ -66,7 +64,7 @@ function getSwitchPower (options, cb) {
             var start = '<Device.System.Power.NowPower>';
             var end = '</Device.System.Power.NowPower>';
             var power = parseFloat(get_value(d, start, end));
-            console.log(power);
+
             cb(power);
         } else {
             cb(undefined);
@@ -83,9 +81,6 @@ function getSwitchEnergy (options, cb) {
             var week = parseFloat(get_value(d, '<Device.System.Power.NowEnergy.Week>', '</Device.System.Power.NowEnergy.Week>'));
             var month = parseFloat(get_value(d, '<Device.System.Power.NowEnergy.Month>', '</Device.System.Power.NowEnergy.Month>'));
 
-            console.log(day);
-            console.log(week);
-            console.log(month);
             cb([day, week, month]);
         } else {
             cb(undefined);
@@ -123,8 +118,6 @@ var parse_advertisement = function (advertisement, cb) {
                             var null_char_index = b.indexOf(0);
                             if (null_char_index > -1) {
                                 edimax_ip = b.slice(3, null_char_index).toString();
-
-                                console.log('ipipipipip ' + edimax_ip);
                             }
                         }
 
@@ -134,42 +127,7 @@ var parse_advertisement = function (advertisement, cb) {
                             var null_char_index = b.indexOf(0);
                             if (null_char_index > -1) {
                                 edimax_pw = b.slice(3, null_char_index).toString();
-
-                                console.log(edimax_pw);
                             }
-
-
-                            // if (advertisement.manufacturerData.length >= 14) {
-                            //     var sensor_data = advertisement.manufacturerData.slice(3);
-
-                            //     var pressure = sensor_data.readUIntLE(0,4)/10;
-                            //     var humidity = sensor_data.readUIntLE(4,2)/100;
-                            //     var temp     = sensor_data.readUIntLE(6,2)/100;
-                            //     var light    = sensor_data.readUIntLE(8,2);
-                            //     var accel    = sensor_data.readUIntLE(10,1);
-
-                            //     var sequence_num = -1;
-                            //     if (sensor_data.length >= 15) {
-                            //         sequence_num = sensor_data.readUIntLE(11,4);
-                            //     }
-
-                            //     var imm_accel = ((accel & 0xF0) != 0);
-                            //     var min_accel = ((accel & 0x0F) != 0);
-
-                            //     var out = {
-                            //         device: 'BLEES',
-                            //         pressure_pascals: pressure,
-                            //         humidity_percent: humidity,
-                            //         temperature_celcius: temp,
-                            //         light_lux: light,
-                            //         acceleration_advertisement: imm_accel,
-                            //         acceleration_interval: min_accel,
-                            //         sequence_number: sequence_num,
-                            //     };
-
-                            //     cb(out);
-                            //     return;
-                            // }
                         }
                     }
                 }
@@ -187,8 +145,6 @@ var parse_advertisement = function (advertisement, cb) {
                                         energy_week_kwh: energies[1],
                                         energy_month_kwh: energies[2]
                                     };
-
-                                    console.log('PROMOTING')
 
                                     cb(out);
                                     return;
