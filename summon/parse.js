@@ -10,7 +10,8 @@ var parse_advertisement = function (advertisement, cb) {
             // one for the service ID.
 
             if (Array.isArray(advertisement.manufacturerData)) {
-                console.log('is array')
+                console.log('is array!!!!')
+                console.log(advertisement.manufacturerData)
 
                 for (var i=0; i<advertisement.manufacturerData.length; i++) {
                     var b = advertisement.manufacturerData[i];
