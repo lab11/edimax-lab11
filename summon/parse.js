@@ -58,7 +58,7 @@ function get_value (s, start, end) {
     return s.slice(start_index+start.length, end_index);
 }
 
-function getSwitchPower (options) {
+function getSwitchPower (options, cb) {
     var cmd = '<?xml version="1.0" encoding="UTF8"?><SMARTPLUG id="edimax"><CMD id="get"><NOW_POWER><Device.System.Power.NowPower/></NOW_POWER></CMD></SMARTPLUG>';
 
     postRequest(cmd, options, function (d) {
@@ -67,14 +67,14 @@ function getSwitchPower (options) {
             var end = '</Device.System.Power.NowPower>';
             var power = parseFloat(get_value(d, start, end));
             console.log(power);
-            return power;
+            cb(power);
         } else {
-            return undefined;
+            cb(undefined);
         }
     });
 };
 
-function getSwitchEnergy (options) {
+function getSwitchEnergy (options, cb) {
     var cmd = '<?xml version="1.0" encoding="UTF8"?><SMARTPLUG id="edimax"><CMD id="get"><NOW_POWER><Device.System.Power.NowEnergy.Day/><Device.System.Power.NowEnergy.Week/><Device.System.Power.NowEnergy.Month/></NOW_POWER></CMD></SMARTPLUG>';
 
     postRequest(cmd, options, function (d) {
@@ -86,9 +86,9 @@ function getSwitchEnergy (options) {
             console.log(day);
             console.log(week);
             console.log(month);
-            return [day, week, month];
+            cb([day, week, month]);
         } else {
-            return undefined;
+            cb(undefined);
         }
     });
 };
@@ -176,23 +176,26 @@ var parse_advertisement = function (advertisement, cb) {
 
 
                 if (edimax_ip != undefined && edimax_pw != undefined) {
-                    var power = getSwitchPower({host: edimax_ip, password: edimax_pw});
-                    var energies = getSwitchEnergy({host: edimax_ip, password: edimax_pw});
+                    getSwitchPower({host: edimax_ip, password: edimax_pw}, function (power) {
+                        if (power !== undefined) {
+                            getSwitchEnergy({host: edimax_ip, password: edimax_pw}, function (energies) {
+                                if (energies !== undefined) {
+                                    var out = {
+                                        device: 'edimax-sp2101w',
+                                        power_watts: power,
+                                        energy_day_kwh: energies[0],
+                                        energy_week_kwh: energies[1],
+                                        energy_month_kwh: energies[2]
+                                    };
 
-                    if (power !== undefined && energies !== undefined) {
-                        var out = {
-                            device: 'edimax-sp2101w',
-                            power_watts: power,
-                            energy_day_kwh: energies[0],
-                            energy_week_kwh: energies[1],
-                            energy_month_kwh: energies[2]
-                        };
+                                    console.log('PROMOTING')
 
-                        console.log('PROMOTING')
-
-                        cb(out);
-                        return;
-                    }
+                                    cb(out);
+                                    return;
+                                }
+                            });
+                        }
+                    });
                 }
 
             }
