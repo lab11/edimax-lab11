@@ -62,11 +62,15 @@ function getSwitchPower (options) {
     var cmd = '<?xml version="1.0" encoding="UTF8"?><SMARTPLUG id="edimax"><CMD id="get"><NOW_POWER><Device.System.Power.NowPower/></NOW_POWER></CMD></SMARTPLUG>';
 
     postRequest(cmd, options, function (d) {
-        var start = '<Device.System.Power.NowPower>';
-        var end = '</Device.System.Power.NowPower>';
-        var power = parseFloat(get_value(d, start, end));
-        console.log(power);
-        return a;
+        if (d) {
+            var start = '<Device.System.Power.NowPower>';
+            var end = '</Device.System.Power.NowPower>';
+            var power = parseFloat(get_value(d, start, end));
+            console.log(power);
+            return a;
+        } else {
+            return undefined;
+        }
     });
 };
 
@@ -74,14 +78,18 @@ function getSwitchEnergy (options) {
     var cmd = '<?xml version="1.0" encoding="UTF8"?><SMARTPLUG id="edimax"><CMD id="get"><NOW_POWER><Device.System.Power.NowEnergy.Day/><Device.System.Power.NowEnergy.Week/><Device.System.Power.NowEnergy.Month/></NOW_POWER></CMD></SMARTPLUG>';
 
     postRequest(cmd, options, function (d) {
-        var day = parseFloat(get_value(d, '<Device.System.Power.NowEnergy.Day>', '</Device.System.Power.NowEnergy.Day>'))
-        var week = parseFloat(get_value(d, '<Device.System.Power.NowEnergy.Week>', '</Device.System.Power.NowEnergy.Week>'));
-        var month = parseFloat(get_value(d, '<Device.System.Power.NowEnergy.Month>', '</Device.System.Power.NowEnergy.Month>'));
+        if (d) {
+            var day = parseFloat(get_value(d, '<Device.System.Power.NowEnergy.Day>', '</Device.System.Power.NowEnergy.Day>'))
+            var week = parseFloat(get_value(d, '<Device.System.Power.NowEnergy.Week>', '</Device.System.Power.NowEnergy.Week>'));
+            var month = parseFloat(get_value(d, '<Device.System.Power.NowEnergy.Month>', '</Device.System.Power.NowEnergy.Month>'));
 
-        console.log(day);
-        console.log(week);
-        console.log(month);
-        return [day, week, month];
+            console.log(day);
+            console.log(week);
+            console.log(month);
+            return [day, week, month];
+        } else {
+            return undefined;
+        }
     });
 };
 
