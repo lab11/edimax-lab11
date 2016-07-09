@@ -24,7 +24,15 @@ endif
 
 CFLAGS += -DEDIMAX_IP=\"$(EDIMAX_IP)\"
 
-main.o: .FORCE
+ifndef EDIMAX_PW
+$(error Must define EDIMAX_PW)
+endif
+
+CFLAGS += -DEDIMAX_PW=\"$(EDIMAX_PW)\"
+
+# Hack to get main.c rebuilt
+hack := $(shell touch main.c)
+
 
 NRF_BASE_PATH ?= ../../nrf5x-base
 include $(NRF_BASE_PATH)/make/Makefile

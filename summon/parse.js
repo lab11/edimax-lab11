@@ -10,8 +10,11 @@ var parse_advertisement = function (advertisement, cb) {
             // one for the service ID.
 
             if (Array.isArray(advertisement.manufacturerData)) {
-                console.log('is array!!!!')
+                console.log('is array!!!! so cool')
                 console.log(advertisement.manufacturerData)
+
+                var edimax_ip = undefined;
+                var edimax_pw = undefined;
 
                 for (var i=0; i<advertisement.manufacturerData.length; i++) {
                     var b = advertisement.manufacturerData[i];
@@ -26,9 +29,25 @@ var parse_advertisement = function (advertisement, cb) {
                             // Parse it as a c string
                             var null_char_index = b.indexOf(0);
                             if (null_char_index > -1) {
-                                var ip = b.slice(3, null_char_index).toString();
+                                edimax_ip = b.slice(3, null_char_index).toString();
 
-                                console.log(ip);
+                                console.log(edimax_ip);
+
+                                // edimax_ip = ip;
+
+                            }
+                        }
+
+                        if (manufacturer_id == 0x02E0 && service_id == 0x1a) {
+                            // OK! This looks like a password
+                            // Parse it as a c string
+                            var null_char_index = b.indexOf(0);
+                            if (null_char_index > -1) {
+                                edimax_pw = b.slice(3, null_char_index).toString();
+
+                                console.log(edimax_pw);
+
+                                // edimax_ip = ip;
 
                             }
 
@@ -67,6 +86,13 @@ var parse_advertisement = function (advertisement, cb) {
                         }
                     }
                 }
+
+
+                if (edimax_ip != undefined && edimax_pw != undefined) {
+                    console.log('ready to control an edimax!')
+                }
+
+
             } else {
                 console.log('not array')
             }
