@@ -2,6 +2,95 @@
  * it.
  */
 
+var http = require('http');
+
+function postRequest (command, options, cb) {
+    options.timeout = 20000;
+    options.port = 10000;
+    options.path = 'smartplug.cgi';
+    options.method = 'POST';
+    options.headers = {
+            'Content-Type': 'application/xml',
+            'Content-Length': command.length
+        };
+    options.username = 'admin';
+
+    options.headers['Authorization'] =
+        "Basic " + new Buffer(options.username + ":" + options.password).toString("base64");
+
+    console.log(options)
+
+    var data = '';
+    var postReq = http.request(options, function (response) {
+        var error;
+        if (response.statusCode >= 300) {
+            cb(undefined);
+            return;
+        }
+        var contentLength = response.headers['content-length'];
+        if (contentLength === undefined || parseInt(contentLength) === 0) {
+            cb(undefined);
+            return;
+        }
+
+        response.setEncoding('utf8');
+        response.on('data', function (result) {
+            data += result;
+        });
+        response.on('end', function () {
+            cb(data);
+        });
+    }).on('error', function (error) {
+        cb(undefined);
+    }).on('timeout', function () {
+        cb(undefined);
+    });
+    postReq.setTimeout(options.timeout);
+    postReq.write(command);
+    postReq.end();
+}
+
+
+
+function get_value (s, start, end) {
+    var start_index = s.indexOf(start);
+    var end_index = s.indexOf(end);
+    return s.slice(start_index+start.length, end_index);
+}
+
+function getSwitchPower (options) {
+    var cmd = '<?xml version="1.0" encoding="UTF8"?><SMARTPLUG id="edimax"><CMD id="get"><NOW_POWER><Device.System.Power.NowPower/></NOW_POWER></CMD></SMARTPLUG>';
+
+    postRequest(cmd, options, function (d) {
+        var start = '<Device.System.Power.NowPower>';
+        var end = '</Device.System.Power.NowPower>';
+        var power = parseFloat(get_value(d, start, end));
+        console.log(power);
+        return a;
+    });
+};
+
+function getSwitchEnergy (options) {
+    var cmd = '<?xml version="1.0" encoding="UTF8"?><SMARTPLUG id="edimax"><CMD id="get"><NOW_POWER><Device.System.Power.NowEnergy.Day/><Device.System.Power.NowEnergy.Week/><Device.System.Power.NowEnergy.Month/></NOW_POWER></CMD></SMARTPLUG>';
+
+    postRequest(cmd, options, function (d) {
+        var day = parseFloat(get_value(d, '<Device.System.Power.NowEnergy.Day>', '</Device.System.Power.NowEnergy.Day>'))
+        var week = parseFloat(get_value(d, '<Device.System.Power.NowEnergy.Week>', '</Device.System.Power.NowEnergy.Week>'));
+        var month = parseFloat(get_value(d, '<Device.System.Power.NowEnergy.Month>', '</Device.System.Power.NowEnergy.Month>'));
+
+        console.log(day);
+        console.log(week);
+        console.log(month);
+        return [day, week, month];
+    });
+};
+
+
+
+
+
+
+
 var parse_advertisement = function (advertisement, cb) {
 
     if (advertisement.localName === 'sp2101w') {
@@ -10,7 +99,7 @@ var parse_advertisement = function (advertisement, cb) {
             // one for the service ID.
 
             if (Array.isArray(advertisement.manufacturerData)) {
-                console.log('is array!!!! so cool')
+                console.log('is array!!!! so cool are we there yet???')
                 console.log(advertisement.manufacturerData)
 
                 var edimax_ip = undefined;
@@ -90,11 +179,15 @@ var parse_advertisement = function (advertisement, cb) {
 
                 if (edimax_ip != undefined && edimax_pw != undefined) {
                     console.log('ready to control an edimax!')
+
+                    var power = getSwitchPower({host: edimax_ip, password: edimax_pw});
+                    var energies = getSwitchEnergy({host: edimax_ip, password: edimax_pw});
+
+                    console.log(power)
+                    console.log(energies)
                 }
 
 
-            } else {
-                console.log('not array')
             }
         }
     }
