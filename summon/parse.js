@@ -107,15 +107,11 @@ var parse_advertisement = function (advertisement, cb) {
             // one for the service ID.
 
             if (Array.isArray(advertisement.manufacturerData)) {
-                console.log('is array!!!! so cool are we there yet???')
-                console.log(advertisement.manufacturerData)
-
                 var edimax_ip = undefined;
                 var edimax_pw = undefined;
 
                 for (var i=0; i<advertisement.manufacturerData.length; i++) {
                     var b = advertisement.manufacturerData[i];
-                    console.log(b)
 
                     if (b.length >= 3) {
                         // Check that manufacturer ID and service byte are correct
@@ -129,9 +125,6 @@ var parse_advertisement = function (advertisement, cb) {
                                 edimax_ip = b.slice(3, null_char_index).toString();
 
                                 console.log(edimax_ip);
-
-                                // edimax_ip = ip;
-
                             }
                         }
 
@@ -143,9 +136,6 @@ var parse_advertisement = function (advertisement, cb) {
                                 edimax_pw = b.slice(3, null_char_index).toString();
 
                                 console.log(edimax_pw);
-
-                                // edimax_ip = ip;
-
                             }
 
 
@@ -186,8 +176,6 @@ var parse_advertisement = function (advertisement, cb) {
 
 
                 if (edimax_ip != undefined && edimax_pw != undefined) {
-                    console.log('ready to control an edimax!')
-
                     var power = getSwitchPower({host: edimax_ip, password: edimax_pw});
                     var energies = getSwitchEnergy({host: edimax_ip, password: edimax_pw});
 
@@ -203,11 +191,7 @@ var parse_advertisement = function (advertisement, cb) {
                         cb(out);
                         return;
                     }
-
-                    console.log(power)
-                    console.log(energies)
                 }
-
 
             }
         }
