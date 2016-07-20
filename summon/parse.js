@@ -146,7 +146,12 @@ var parse_advertisement = function (advertisement, cb) {
                                         energy_month_kwh: energies[2]
                                     };
 
-                                    cb(out);
+                                    var local = {
+                                        ipaddress: edimax_ip,
+                                        password:  edimax_pw,
+                                    };
+
+                                    cb(out, local);
                                     return;
                                 }
                             });
