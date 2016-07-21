@@ -35,6 +35,7 @@ function getRequest (url, cb) {
             cb(JSON.parse(data));
         });
     }).on('error', function (error) {
+        console.log(error)
         cb(undefined);
     }).on('timeout', function () {
         cb(undefined);
