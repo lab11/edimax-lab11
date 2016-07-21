@@ -3,11 +3,10 @@
  */
 
 var http = require('http');
+var url = require('url');
 
 function getRequest (url, cb) {
-    var options = {};
-
-    options.url = url;
+    var options = url.parse(hue_url);
     options.method = 'GET';
 
     console.log(options)
