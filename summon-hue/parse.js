@@ -42,7 +42,7 @@ function getRequest (url, cb) {
 
 
 function getBulbState (bridge_ip, bridge_username, bulb_id, cb) {
-    var url = 'http://' + bridge_ip + '/api/' + bridge_username + '/lights/' + bulb_id + '/state';
+    var url = 'http://' + bridge_ip + '/api/' + bridge_username + '/lights/' + bulb_id;
 
     console.log('url ' + url);
 
