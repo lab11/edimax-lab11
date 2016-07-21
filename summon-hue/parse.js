@@ -19,11 +19,9 @@ function getRequest (hue_url, cb) {
 
         response.setEncoding('utf8');
         response.on('data', function (result) {
-            console.log(result)
             data += result;
         });
         response.on('end', function () {
-            console.log(data)
             cb(JSON.parse(data));
         });
     }).on('error', function (error) {
