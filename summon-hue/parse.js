@@ -5,7 +5,7 @@
 var http = require('http');
 var url = require('url');
 
-function getRequest (url, cb) {
+function getRequest (hue_url, cb) {
     var options = url.parse(hue_url);
     options.method = 'GET';
 
