@@ -44,7 +44,7 @@ static ip_mandata_t _ip_mandata = {
 };
 
 static hue_mandata_t _hue_mandata = {
-    0x1a,
+    0x1c,
     HUE_BULB_ID,
     HUE_USERNAME
 };
