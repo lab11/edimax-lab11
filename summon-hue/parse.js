@@ -10,6 +10,8 @@ function getRequest (url, cb) {
     options.url = url;
     options.method = 'GET';
 
+    console.log(options)
+
     var data = '';
     var getReq = http.request(options, function (response) {
         var error;
@@ -47,6 +49,8 @@ function getBulbState (bridge_ip, bridge_username, bulb_id, cb) {
     console.log('url ' + url);
 
     getRequest(url, function (d) {
+        console.log('called with something')
+        console.log(d)
         cb(d);
     });
 };
