@@ -19,11 +19,11 @@ function getRequest (url, cb) {
             cb(undefined);
             return;
         }
-        var contentLength = response.headers['content-length'];
-        if (contentLength === undefined || parseInt(contentLength) === 0) {
-            cb(undefined);
-            return;
-        }
+        // var contentLength = response.headers['content-length'];
+        // if (contentLength === undefined || parseInt(contentLength) === 0) {
+        //     cb(undefined);
+        //     return;
+        // }
 
         response.setEncoding('utf8');
         response.on('data', function (result) {
