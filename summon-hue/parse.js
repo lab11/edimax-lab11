@@ -11,6 +11,7 @@ function getRequest (url, cb) {
     options.method = 'GET';
 
     console.log(options)
+    console.log('why')
 
     var data = '';
     var getReq = http.request(options, function (response) {
