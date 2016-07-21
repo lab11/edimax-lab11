@@ -5,6 +5,8 @@
 var http = require('http');
 
 function getRequest (url, cb) {
+    var options = {};
+
     options.url = url;
     options.method = 'GET';
 
