@@ -9,9 +9,6 @@ function getRequest (hue_url, cb) {
     var options = url.parse(hue_url);
     options.method = 'GET';
 
-    console.log(options)
-    console.log('why')
-
     var data = '';
     var getReq = http.request(options, function (response) {
         var error;
@@ -19,11 +16,6 @@ function getRequest (hue_url, cb) {
             cb(undefined);
             return;
         }
-        // var contentLength = response.headers['content-length'];
-        // if (contentLength === undefined || parseInt(contentLength) === 0) {
-        //     cb(undefined);
-        //     return;
-        // }
 
         response.setEncoding('utf8');
         response.on('data', function (result) {
@@ -35,7 +27,6 @@ function getRequest (hue_url, cb) {
             cb(JSON.parse(data));
         });
     }).on('error', function (error) {
-        console.log(error)
         cb(undefined);
     }).on('timeout', function () {
         cb(undefined);
@@ -47,11 +38,7 @@ function getRequest (hue_url, cb) {
 function getBulbState (bridge_ip, bridge_username, bulb_id, cb) {
     var url = 'http://' + bridge_ip + '/api/' + bridge_username + '/lights/' + bulb_id;
 
-    console.log('url ' + url);
-
     getRequest(url, function (d) {
-        console.log('called with something')
-        console.log(d)
         cb(d);
     });
 };
@@ -101,10 +88,6 @@ var parse_advertisement = function (advertisement, cb) {
 
 
                 if (hue_bridge_ip != undefined && hue_bridge_username != undefined && hue_bulb_id != undefined) {
-                    console.log(hue_bridge_ip)
-                    console.log(hue_bridge_username)
-                    console.log(hue_bulb_id)
-                    console.log('get hue')
                     getBulbState(hue_bridge_ip, hue_bridge_username, hue_bulb_id, function (bulb) {
                         if (bulb !== undefined) {
                             var state = bulb.state;
