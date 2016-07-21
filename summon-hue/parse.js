@@ -25,9 +25,11 @@ function getRequest (url, cb) {
 
         response.setEncoding('utf8');
         response.on('data', function (result) {
+            console.log(result)
             data += result;
         });
         response.on('end', function () {
+            console.log(data)
             cb(JSON.parse(data));
         });
     }).on('error', function (error) {
@@ -41,6 +43,8 @@ function getRequest (url, cb) {
 
 function getBulbState (bridge_ip, bridge_username, bulb_id, cb) {
     var url = 'http://' + bridge_ip + '/api/' + bridge_username + '/lights/' + bulb_id + '/state';
+
+    console.log('url ' + url);
 
     getRequest(url, function (d) {
         cb(d);
