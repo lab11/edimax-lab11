@@ -95,6 +95,7 @@ var parse_advertisement = function (advertisement, cb) {
                     console.log(hue_bridge_ip)
                     console.log(hue_bridge_username)
                     console.log(hue_bulb_id)
+                    console.log('get hue')
                     getBulbState(hue_bridge_ip, hue_bridge_username, hue_bulb_id, function (bulb) {
                         if (bulb !== undefined) {
                             var state = bulb.state;
